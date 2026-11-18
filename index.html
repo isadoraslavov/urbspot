@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#09070f">
+  <meta name="description" content="UrbSpot é o guia interativo de eventos e cultura urbana de Brasília: eletrônica, rap, samba, arte e comida de rua.">
+  <title>UrbSpot — Rolês e cultura urbana de Brasília</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://images.unsplash.com">
+  <link href="https://fonts.googleapis.com/css2?family=Permanent+Marker&family=Rubik+Glitch&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <script>
+    (function () {
+      try {
+        var saved = JSON.parse(localStorage.getItem("urbspot:settings") || "{}");
+        var scales = [87.5, 100, 112.5, 125, 137.5, 150];
+        var index = Number(saved.fontIndex);
+        if (!Number.isInteger(index)) index = 1;
+        index = Math.min(scales.length - 1, Math.max(0, index));
+        var root = document.documentElement;
+        root.dataset.theme = saved.theme === "light" ? "light" : "dark";
+        if (saved.contrast) root.dataset.contrast = "high";
+        root.style.fontSize = scales[index] + "%";
+      } catch (error) {}
+    })();
+  </script>
+</head>
+<body>
+  <a class="skip" href="#conteudo">Ir para o conteúdo</a>
+
+  <header class="site-header">
+    <div class="a11y-bar" role="region" aria-label="Acessibilidade">
+      <p id="a11y-label" class="a11y-title">Acessibilidade</p>
+      <div class="a11y-controls" role="group" aria-labelledby="a11y-label">
+        <button type="button" id="font-inc" aria-label="Aumentar fonte">A+</button>
+        <button type="button" id="font-dec" aria-label="Diminuir fonte">A-</button>
+        <button type="button" id="font-reset">Resetar fonte</button>
+        <button type="button" id="theme-toggle">Tema: escuro</button>
+        <button type="button" id="contrast-toggle" aria-pressed="false">Alto contraste</button>
+      </div>
+    </div>
+
+    <div class="topbar">
+      <a class="logo" href="#inicio">UrbSpot <span>Brasília</span></a>
+      <nav aria-label="Seções do guia">
+        <a href="#vibe">Sua vibe</a>
+        <a href="#catalogo">Catálogo</a>
+        <a href="#favoritos">Meus Rolês <span id="fav-count" class="count">0</span></a>
+        <a href="#historico">Histórico</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="conteudo">
+    <section class="hero" id="inicio" aria-labelledby="hero-title">
+      <div class="hero-media">
+        <p class="photo-fallback">Festival noturno</p>
+        <img
+          src="https://images.unsplash.com/photo-1506157786151-b8491531f063?auto=format&fit=crop&w=1800&q=80"
+          alt="Multidão em um festival de música ao ar livre, à noite, com luzes douradas e mãos para o alto"
+          width="1800"
+          height="1200"
+          decoding="async"
+          referrerpolicy="no-referrer">
+      </div>
+      <div class="hero-copy">
+        <p class="brand-glitch" aria-hidden="true">UrbSpot</p>
+        <h1 id="hero-title">O guia de rolês e cultura urbana de Brasília.</h1>
+        <p class="lede">Shows, batalhas, samba, muro e comida de rua — do Conic ao Pontão, no horário em que a cidade acende.</p>
+        <a class="btn btn-primary" href="#vibe">Montar minha vibe</a>
+      </div>
+    </section>
+
+    <section class="panel" id="vibe" aria-labelledby="vibe-title">
+      <form id="vibe-form" aria-describedby="vibe-hint">
+        <fieldset>
+          <legend id="vibe-title">Qual é a sua vibe hoje?</legend>
+          <p id="vibe-hint">Filtre por estilo, humor, faixa etária e orçamento. A busca por palavra-chave responde na hora.</p>
+          <div class="filter-grid">
+            <div class="field">
+              <label for="filter-category">Estilo</label>
+              <select id="filter-category" name="category">
+                <option value="">Todos os estilos</option>
+                <option>Música Eletrônica</option>
+                <option>Rap/Hip-Hop</option>
+                <option>Arte &amp; Exposições</option>
+                <option>Gastronomia de Rua</option>
+                <option>Samba &amp; Pagode</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="filter-mood">Humor</label>
+              <select id="filter-mood" name="mood">
+                <option value="">Qualquer humor</option>
+                <option>Agitado</option>
+                <option>De Boa</option>
+                <option>Cultural</option>
+                <option>Alternativo</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="filter-age">Faixa etária</label>
+              <select id="filter-age" name="age">
+                <option value="">Todas as idades</option>
+                <option>Livre</option>
+                <option>+16</option>
+                <option>+18</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="filter-budget">Orçamento</label>
+              <select id="filter-budget" name="budget">
+                <option value="">Qualquer orçamento</option>
+                <option>Gratuito</option>
+                <option>Até R$ 50</option>
+                <option>Acima de R$ 50</option>
+              </select>
+            </div>
+            <div class="field field-search">
+              <label for="filter-query">Buscar por palavra-chave</label>
+              <input id="filter-query" name="q" type="search" placeholder="Artista, lugar, rolê…" autocomplete="off" enterkeyhint="search">
+            </div>
+            <div class="field field-action">
+              <button type="reset" id="clear-filters" hidden>Limpar filtros</button>
+            </div>
+          </div>
+        </fieldset>
+      </form>
+    </section>
+
+    <section class="panel" id="catalogo" aria-labelledby="catalog-title">
+      <div class="section-head">
+        <h2 id="catalog-title">Rolês em Brasília</h2>
+        <p id="result-count">12 rolês em Brasília</p>
+        <p id="result-live" class="visually-hidden" aria-live="polite"></p>
+      </div>
+      <div id="catalog" class="ticket-grid" aria-label="Eventos compatíveis com a sua vibe"></div>
+    </section>
+
+    <section class="panel" id="favoritos" aria-labelledby="fav-title">
+      <div class="section-head">
+        <h2 id="fav-title">Meus Rolês <span class="count" id="fav-heading-count">0</span></h2>
+        <p>Os favoritos ficam salvos neste navegador.</p>
+      </div>
+      <div id="favorites" class="ticket-grid" aria-label="Eventos favoritos"></div>
+    </section>
+
+    <section class="panel" id="historico" aria-labelledby="history-title">
+      <div class="section-head">
+        <h2 id="history-title">Histórico recente <span class="count" id="history-count">0</span></h2>
+        <p>Os últimos 6 eventos abertos em Ver detalhes.</p>
+      </div>
+      <div id="history" class="ticket-grid history-grid" aria-label="Histórico recente de eventos"></div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <p class="logo logo-foot">UrbSpot</p>
+    <p>Guia interativo de eventos e cultura urbana de Brasília. Pontão, Funarte, Conic, Torre de TV, Parque da Cidade, SCS, CCBB e Orla do Paranoá.</p>
+    <p>Reservas geram um código local de demonstração. Nenhum pagamento é processado.</p>
+  </footer>
+
+  <dialog id="event-dialog" aria-labelledby="dialog-title">
+    <div class="dialog-sheet" id="dialog-sheet"></div>
+  </dialog>
+
+  <div id="toaster" class="toaster" role="status" aria-live="polite" aria-relevant="additions"></div>
+
+  <noscript>
+    <p class="noscript">O UrbSpot precisa de JavaScript para filtrar eventos, salvar rolês e abrir os detalhes.</p>
+  </noscript>
+
+  <script src="js/events.js"></script>
+  <script src="js/storage.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
